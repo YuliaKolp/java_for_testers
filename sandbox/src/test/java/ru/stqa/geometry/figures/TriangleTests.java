@@ -21,7 +21,10 @@ public class TriangleTests {
 
     @Test
     void canCalculateArea() {
-        Assertions.assertEquals(2.9047375096555625, new Triangle(2.0, 3.0, 4.0).area());
+        var trn = new Triangle(2.0, 3.0, 4.0);
+        Assertions.assertEquals(2.9047375096555625, trn.area());
+        // Asserts that expected and actual are equal within the given delta.
+        Assertions.assertEquals(2.905, trn.area(), 0.001);
     }
 
 }
