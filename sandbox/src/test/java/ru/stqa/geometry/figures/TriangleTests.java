@@ -30,4 +30,26 @@ public class TriangleTests {
         Assertions.assertEquals(2.905, trn.area(), 0.001);
     }
 
+    @Test
+    void testEquality() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(2.0, 3.0, 4.0);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    void testEquality2() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(2.0, 4.0, 3.0);
+        var t3 = new Triangle(3.0, 2.0, 4.0);
+        var t4 = new Triangle(3.0, 4.0, 2.0);
+        var t5 = new Triangle(4.0, 2.0, 3.0);
+        var t6 = new Triangle(4.0, 3.0, 2.0);
+        //coverage
+        Assertions.assertEquals(t1, t2);
+        Assertions.assertEquals(t1, t3);
+        Assertions.assertEquals(t1, t4);
+        Assertions.assertEquals(t1, t5);
+        Assertions.assertEquals(t1, t6);
+    }
 }
