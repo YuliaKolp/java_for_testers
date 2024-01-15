@@ -37,42 +37,45 @@ public class TriangleTests {
         Assertions.assertEquals(t1, t2);
     }
 
-    //
-    public static int compareTriangles(int testN, Triangle t1, double a, double b, double c, boolean expectedRes) {
-        System.out.format("Start test %x. Triangle: %f, %f, %f. Expected equality is %b. ", testN, a, b, c, expectedRes);
-        var t2 = new Triangle(a, b, c);
-        //Assertions.assertEquals(t1, t2);
-        boolean compRes = t1.equals(t2);
-        if (compRes == expectedRes) {
-            System.out.println("Passed!");
-        }else{
-            System.out.println("Failed!");
-        }
-
-        testN = testN + 1;
-        return testN;
-    }
     @Test
     void testEquality2() {
-       // create sample triangle
-        var a = 2.0;
-        var b = 3.0;
-        var c = 4.0;
-        var t1 = new Triangle(a, b, c);
-        // compare with other triangles
-        var testN = 1;
-        boolean expectedRes = true;
-        testN = compareTriangles(testN, t1, 2.0, 3.0, 4.0, expectedRes);
-        testN = compareTriangles(testN, t1, 2.0, 4.0, 3.0, expectedRes);
-        testN = compareTriangles(testN, t1, 3.0, 2.0, 4.0, expectedRes);
-        testN = compareTriangles(testN, t1, 3.0, 4.0, 2.0, expectedRes);
-        testN = compareTriangles(testN, t1, 4.0, 2.0, 3.0, expectedRes);
-        testN = compareTriangles(testN, t1, 4.0, 3.0, 2.0, expectedRes);
-        testN = compareTriangles(testN, t1, 3.0, 3.0, 5.0, expectedRes); // failed test
-        expectedRes = false;
-        testN = compareTriangles(testN, t1, 3.0, 3.0, 5.0, expectedRes);
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(2.0, 4.0, 3.0);
+        Assertions.assertEquals(t1, t2);
+   }
 
+    @Test
+    void testEquality3() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle( 3.0, 2.0, 4.0);
+        Assertions.assertEquals(t1, t2);
     }
 
+    @Test
+    void testEquality4() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(3.0, 4.0, 2.0);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    void testEquality5() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(4.0, 2.0, 3.0);
+        Assertions.assertEquals(t1, t2);
+    }
+    @Test
+    void testEquality6() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(4.0, 3.0, 2.0);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    void testNonEquality() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(3.0, 3.0, 5.0);
+        Assertions.assertNotEquals(t1, t2);
+    }
 
 }
