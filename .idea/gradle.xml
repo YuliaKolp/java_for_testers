@@ -4,6 +4,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+<<<<<<< HEAD
         <option name="externalProjectPath" value="$PROJECT_DIR$/../addressbook_web_tests" />
         <option name="gradleHome" value="" />
         <option name="modules">
@@ -13,6 +14,8 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+=======
+>>>>>>> parent of 35dcab4 (Lecture 2.7 final)
         <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/sandbox" />
