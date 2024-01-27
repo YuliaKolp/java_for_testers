@@ -1,3 +1,4 @@
+import model.ContactData;
 import model.GroupData;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
@@ -6,79 +7,78 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class TestBase {
     protected static WebDriver driver;
 
-    protected static void createContact(String firstname, String middlename, String lastname, String nickname,
-                                        String title, String company, String address, String home, String mobile,
-                                        String work, String fax, String email, String email2, String email3,
-                                        String homepage, String bday, String byear,
-                                        String group)
+    protected static void createContact(ContactData contactData)
     {
-        //  String, bday, String bmonth, String byear, String aday,
-        // String amonth, String ayear,
+        String xpathString = ""; // create variable for xpath string
         driver.findElement(By.name("firstname")).click();
-        driver.findElement(By.name("firstname")).sendKeys(firstname);
+        driver.findElement(By.name("firstname")).sendKeys(contactData.firstname());
         driver.findElement(By.name("middlename")).click();
-        driver.findElement(By.name("middlename")).sendKeys(middlename);
+        driver.findElement(By.name("middlename")).sendKeys(contactData.middlename());
         driver.findElement(By.name("lastname")).click();
-        driver.findElement(By.name("lastname")).sendKeys(lastname);
+        driver.findElement(By.name("lastname")).sendKeys(contactData.lastname());
         driver.findElement(By.name("nickname")).click();
-        driver.findElement(By.name("nickname")).sendKeys(nickname);
+        driver.findElement(By.name("nickname")).sendKeys(contactData.nickname());
         driver.findElement(By.name("title")).click();
-        driver.findElement(By.name("title")).sendKeys(title);
+        driver.findElement(By.name("title")).sendKeys(contactData.title());
         driver.findElement(By.name("company")).click();
-        driver.findElement(By.name("company")).sendKeys(company);
+        driver.findElement(By.name("company")).sendKeys(contactData.company());
         driver.findElement(By.name("address")).click();
-        driver.findElement(By.name("address")).sendKeys(address);
+        driver.findElement(By.name("address")).sendKeys(contactData.address());
         driver.findElement(By.name("home")).click();
-        driver.findElement(By.name("home")).sendKeys(home);
+        driver.findElement(By.name("home")).sendKeys(contactData.home());
         driver.findElement(By.name("mobile")).click();
-        driver.findElement(By.name("mobile")).sendKeys(mobile);
+        driver.findElement(By.name("mobile")).sendKeys(contactData.mobile());
         driver.findElement(By.name("work")).click();
-        driver.findElement(By.name("work")).sendKeys(work);
+        driver.findElement(By.name("work")).sendKeys(contactData.work());
         driver.findElement(By.name("fax")).click();
-        driver.findElement(By.name("fax")).sendKeys(fax);
+        driver.findElement(By.name("fax")).sendKeys(contactData.fax());
         driver.findElement(By.name("email")).click();
-        driver.findElement(By.name("email")).sendKeys(email);
-        //driver.findElement(By.cssSelector("body")).click();
+        driver.findElement(By.name("email")).sendKeys(contactData.email());
         driver.findElement(By.name("email2")).click();
-        driver.findElement(By.name("email2")).sendKeys(email2);
+        driver.findElement(By.name("email2")).sendKeys(contactData.email2());
         driver.findElement(By.name("email3")).click();
-        driver.findElement(By.name("email3")).sendKeys(email3);
+        driver.findElement(By.name("email3")).sendKeys(contactData.email3());
         driver.findElement(By.name("homepage")).click();
-        driver.findElement(By.name("homepage")).sendKeys(homepage);
+        driver.findElement(By.name("homepage")).sendKeys(contactData.homepage());
 
         driver.findElement(By.name("bday")).click();
         {
             WebElement dropdown = driver.findElement(By.name("bday"));
-            String xpathString = "//option[. = '" + bday + "']"; // make xpath string
-            System.out.println(xpathString);
+            xpathString = "//option[. = '" + contactData.bday() + "']"; // make xpath string
             dropdown.findElement(By.xpath(xpathString)).click();
         }
 
         driver.findElement(By.name("bmonth")).click();
         {
             WebElement dropdown = driver.findElement(By.name("bmonth"));
-            dropdown.findElement(By.xpath("//option[. = 'August']")).click();
+            xpathString = "//option[. = '" + contactData.bmonth() + "']"; // make xpath string
+            dropdown.findElement(By.xpath(xpathString)).click();
         }
 
         driver.findElement(By.name("byear")).click();
-        driver.findElement(By.name("byear")).sendKeys(byear);
+        driver.findElement(By.name("byear")).sendKeys(contactData.byear());
 
         driver.findElement(By.name("aday")).click();
         {
             WebElement dropdown = driver.findElement(By.name("aday"));
-            dropdown.findElement(By.xpath("//option[. = '12']")).click();
+            xpathString = "//option[. = '" + contactData.aday() + "']"; // make xpath string
+            dropdown.findElement(By.xpath(xpathString)).click();
         }
+
         driver.findElement(By.name("amonth")).click();
         {
             WebElement dropdown = driver.findElement(By.name("amonth"));
-            dropdown.findElement(By.xpath("//option[. = 'December']")).click();
+            xpathString = "//option[. = '" + contactData.amonth() + "']"; // make xpath string
+            dropdown.findElement(By.xpath(xpathString)).click();
         }
+
         driver.findElement(By.name("ayear")).click();
-        driver.findElement(By.name("ayear")).sendKeys("2000");
+        driver.findElement(By.name("ayear")).sendKeys(contactData.ayear());
+
         driver.findElement(By.name("new_group")).click();
         {
-            WebElement dropdown = driver.findElement(By.name(group));
-            dropdown.findElement(By.xpath("//option[. = " + "'" + group + "'" + "]")).click();
+            WebElement dropdown = driver.findElement(By.name(contactData.group()));
+            dropdown.findElement(By.xpath("//option[. = " + "'" + contactData.group() + "'" + "]")).click();
         }
         driver.findElement(By.xpath("(//input[@name=\'submit\'])[2]")).click();
         driver.findElement(By.linkText("home page")).click();
