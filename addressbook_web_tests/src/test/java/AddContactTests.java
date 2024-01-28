@@ -25,4 +25,12 @@ public class AddContactTests extends TestBase {
                         "www.jdoe.com", "15", "September", "2001",
                         "12", "April", "1991", "new_group"));
     }
+
+    @Test
+    public void canAddContactWitnFirstnameOnly(){
+        openContactPage();
+        var emptyContact = new ContactData();
+        var contactWithName = emptyContact.withFirstName("some first name");
+        createContact(contactWithName);
+    }
 }
