@@ -12,6 +12,7 @@ public record ContactData(String name, String middlename, String lastname, Strin
 
     }
 
+
     public ContactData withFirstName(String firstname) {
         return new ContactData(firstname, this.middlename, this.lastname, this.nickname,  this.title, this.company,
                 this.address, this.home, this.mobile, this.work, this.fax, this.email, this.email2, this.email3,
@@ -29,6 +30,5 @@ public record ContactData(String name, String middlename, String lastname, Strin
                 this.address, this.home, this.mobile, this.work, this.fax, this.email, this.email2, this.email3,
                 this.homepage, this.bday, this.bmonth, this.byear, this.aday, this.amonth, this.ayear, this.group);
     }
-
 
 }

@@ -8,9 +8,8 @@ public class GroupRemovalTests extends TestBase {
         openGroupsPage();
         //check on group presence
         if (!isGroupPresent()){
-            createGroup(new GroupData("group name", "group header", "group footer"));
+            createGroup(new GroupData("group name!!!!", "group header", "group footer"));
         }
         removeGroup();
     }
-
 }

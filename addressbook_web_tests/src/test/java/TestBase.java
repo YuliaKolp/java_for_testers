@@ -75,13 +75,15 @@ public class TestBase {
         driver.findElement(By.name("ayear")).click();
         driver.findElement(By.name("ayear")).sendKeys(contact.ayear());
 
-
         //check if group specified;
-        if (!contact.group().isEmpty()) {
-            //driver.findElement(locator);
+        String grName = contact.group();
+        if (!grName.isEmpty()) {
             driver.findElement(By.name("new_group")).click();
-            WebElement dropdown = driver.findElement(By.name(contact.group()));
-            dropdown.findElement(By.xpath("//option[. = " + "'" + contact.group() + "'" + "]")).click();
+            WebElement dropdown = driver.findElement(By.name("new_group"));
+            xpathString = "//option[. = '" + grName + "']";
+
+            //dropdown.findElement(By.xpath(xpathString)).click();
+            //createGroup(new GroupData(grName, "group header", "group footer"));
         }
 
         driver.findElement(By.xpath("(//input[@name=\'submit\'])[2]")).click();
@@ -117,7 +119,7 @@ public class TestBase {
 
     protected static void removeContact() {
         driver.findElement(By.name("selected[]")).click();
-        driver.findElement(By.name("delete")).click();
+        driver.findElement(By.name("Delete")).click();
         driver.findElement(By.linkText("group page")).click();
     }
 
