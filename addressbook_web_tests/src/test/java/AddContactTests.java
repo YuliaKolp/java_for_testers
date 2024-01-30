@@ -5,7 +5,7 @@ public class AddContactTests extends TestBase {
 
     @Test
     public void canAddContact() {
-        openContactPage();
+        openAddContactPage();
         createContact(
                 new ContactData("Bill", "Jack", "Doedoe", "nick", "QA",
                         "QAInc", "green st", "7", "123", "456", "789",
@@ -16,7 +16,7 @@ public class AddContactTests extends TestBase {
 
     @Test
     public void canAddContactWithEmptyName() {
-        openContactPage();
+        openAddContactPage();
         //createContact(firstname, middlename, lastname, nickname, title, company, address, home, mobile,work,  fax, email, email2, email3, homepage, bday, bmonth, byear, aday, amonth, ayear, group);
         createContact(
                 new ContactData("", "Mickel", "Doedoe", "nick", "QA",
@@ -28,7 +28,7 @@ public class AddContactTests extends TestBase {
 
     @Test
     public void canAddContactWitnFirstnameOnly(){
-        openContactPage();
+        openAddContactPage();
         var emptyContact = new ContactData();
         var contactWithName = emptyContact.withFirstName("some first name");
         createContact(contactWithName);
@@ -36,7 +36,7 @@ public class AddContactTests extends TestBase {
 
     @Test
     public void canAddContactWithNotEmptyGroup() {
-        openContactPage();
+        openAddContactPage();
         //createContact(firstname, middlename, lastname, nickname, title, company, address, home, mobile,work,  fax, email, email2, email3, homepage, bday, bmonth, byear, aday, amonth, ayear, group);
         createContact(
                 new ContactData("Sam", "Mickel", "Doedoe", "nick", "QA",

@@ -5,10 +5,10 @@ public class ContactRemovalTests extends TestBase   {
 
     @Test
     public void canRemoveContact(){
-        openContactPage();
+        openHomePage();
         if (!isContactPresent()){
+            System.out.println("CREATE CONT");
             createContact(new ContactData().withFirstName("toRemove"));
-            openContactPage();
         }
         removeContact();
 

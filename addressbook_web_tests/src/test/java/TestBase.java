@@ -119,10 +119,9 @@ public class TestBase {
 
     protected static void removeContact() {
         driver.findElement(By.name("selected[]")).click();
-        System.out.println("22");
         driver.findElement(By.name("Delete")).click();
         //driver.switchTo().alert().accept();
-        driver.findElement(By.linkText("group page")).click();
+        //driver.findElement(By.linkText("group page")).click();
     }
 
     @BeforeEach
@@ -154,11 +153,15 @@ public class TestBase {
         }
     }
 
-    protected void openContactPage() {
+    protected void openAddContactPage() {
         if (!isElementPresent(By.name("Enter"))) {
             driver.findElement(By.linkText("add new")).click();
         }
     }
-
+    protected void openHomePage() {
+        if (!isElementPresent(By.name("Delete"))) {
+            driver.findElement(By.linkText("home")).click();
+        }
+    }
 
 }

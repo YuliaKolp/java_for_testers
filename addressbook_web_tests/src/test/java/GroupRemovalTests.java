@@ -10,6 +10,6 @@ public class GroupRemovalTests extends TestBase {
         if (!isGroupPresent()){
             createGroup(new GroupData("group name!!!!", "group header", "group footer"));
         }
-        //removeGroup();
+        removeGroup();
     }
 }
