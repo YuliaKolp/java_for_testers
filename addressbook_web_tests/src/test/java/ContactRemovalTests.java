@@ -1,5 +1,4 @@
 import model.ContactData;
-import model.GroupData;
 import org.junit.jupiter.api.Test;
 
 public class ContactRemovalTests extends TestBase   {
@@ -9,8 +8,9 @@ public class ContactRemovalTests extends TestBase   {
         openContactPage();
         if (!isContactPresent()){
             createContact(new ContactData().withFirstName("toRemove"));
+            openContactPage();
         }
-        //removeContact();
+        removeContact();
 
     }
 }
