@@ -119,9 +119,8 @@ public class TestBase {
 
     protected static void removeContact() {
         driver.findElement(By.name("selected[]")).click();
-        driver.findElement(By.name("Delete")).click();
+        driver.findElement(By.xpath("//input[@value=\'Delete\']")).click();
         //driver.switchTo().alert().accept();
-        //driver.findElement(By.linkText("group page")).click();
     }
 
     @BeforeEach

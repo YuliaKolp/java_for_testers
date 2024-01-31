@@ -17,7 +17,6 @@ public class AddContactTests extends TestBase {
     @Test
     public void canAddContactWithEmptyName() {
         openAddContactPage();
-        //createContact(firstname, middlename, lastname, nickname, title, company, address, home, mobile,work,  fax, email, email2, email3, homepage, bday, bmonth, byear, aday, amonth, ayear, group);
         createContact(
                 new ContactData("", "Mickel", "Doedoe", "nick", "QA",
                         "QAInc", "green st", "7", "123", "456", "789",
