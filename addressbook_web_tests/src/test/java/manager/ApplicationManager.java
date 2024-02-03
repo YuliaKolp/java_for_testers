@@ -9,6 +9,7 @@ public class ApplicationManager {
     protected WebDriver driver;
     private LoginHelper session;
     private GroupHelper groups;
+    private ContactHelper contacts;
 
     public void init(String browser) {
         if (driver == null) {
@@ -26,7 +27,6 @@ public class ApplicationManager {
         }
     }
 
-
     public LoginHelper session(){
         if (session == null) {
             session = new LoginHelper(this);
@@ -41,6 +41,13 @@ public class ApplicationManager {
         return groups;
     }
 
+    public ContactHelper contacts(){
+        if (contacts == null) {
+            contacts = new ContactHelper(this);
+        }
+        return contacts;
+    }
+
     protected boolean isElementPresent(By locator) {
         try {
             driver.findElement(locator);
@@ -50,15 +57,14 @@ public class ApplicationManager {
         }
     }
 
-    public boolean isContactPresent() {
-        return isElementPresent(By.name("selected[]"));
+    public boolean isContactPresent() {return isElementPresent(By.name("selected[]"));
     }
 
-    public void openAddContactPage() {
+    /*public void openAddContactPage() {
         if (!isElementPresent(By.name("Enter"))) {
             driver.findElement(By.linkText("add new")).click();
         }
-    }
+    }*/
 
     public void openHomePage() {
         if (!isElementPresent(By.name("Delete"))) {
@@ -72,7 +78,7 @@ public class ApplicationManager {
         //driver.switchTo().alert().accept();
     }
 
-    public void createContact(ContactData contact)
+    /*public void createContact(ContactData contact)
     {
         String xpathString = ""; // create variable for xpath string
         driver.findElement(By.name("firstname")).click();
@@ -154,5 +160,5 @@ public class ApplicationManager {
         driver.findElement(By.xpath("(//input[@name=\'submit\'])[2]")).click();
         driver.findElement(By.linkText("home page")).click();
         driver.findElement(By.cssSelector("html")).click();
-    }
+    }*/
 }
