@@ -28,13 +28,4 @@ public class HelperBase {
         dropdown.findElement(By.xpath(xpathString)).click();
     }
 
-    /*
-    ddropDownType(By.name("bday"), contact.bday());
-
-    driver.findElement(By.name("bday")).click();
-    {
-        WebElement dropdown = driver.findElement(By.name("bday"));
-        xpathString = "//option[. = '" + contact.bday() + "']"; // make xpath string
-        dropdown.findElement(By.xpath(xpathString)).click();
-    }*/
 }

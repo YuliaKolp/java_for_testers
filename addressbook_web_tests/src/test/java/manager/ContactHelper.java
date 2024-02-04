@@ -16,12 +16,12 @@ public class ContactHelper extends HelperBase {
         returnToHomePage();
     }
 
-    public void openContactPage() {
-        if (!manager.isElementPresent(By.name("Enter"))) {
-            click(By.linkText("add new"));
-            //driver.findElement(By.linkText("add new")).click();
-        }
+    public void removeContact() {
+        click(By.name("selected[]"));
+        click(By.xpath("//input[@value=\'Delete\']"));
+        //driver.switchTo().alert().accept();
     }
+
 
     private void initContactCreation() {
         click(By.linkText("add new"));
@@ -44,13 +44,6 @@ public class ContactHelper extends HelperBase {
         type(By.name("email3"), contact.email3());
         type(By.name("homepage"), contact.homepage());
 
-        /*driver.findElement(By.name("bday")).click();
-        {
-            WebElement dropdown = driver.findElement(By.name("bday"));
-            xpathString = "//option[. = '" + contact.bday() + "']"; // make xpath string
-            dropdown.findElement(By.xpath(xpathString)).click();
-        }*/
-
         dropDownType(By.name("bday"), contact.bday());
         dropDownType(By.name("bmonth"), contact.bmonth());
         type(By.name("byear"), contact.byear());
@@ -60,9 +53,13 @@ public class ContactHelper extends HelperBase {
         type(By.name("ayear"), contact.ayear());
 
         //check if group specified;
-        String grName = contact.group();
-        if (!grName.isEmpty()) {
-            dropDownType(By.name("new_group"), contact.group());
+        String groupName = contact.group();
+        if (!groupName.isEmpty()) {
+            try {
+                dropDownType(By.name("new_group"), groupName);
+            } catch (org.openqa.selenium.NoSuchElementException exception) {
+                System.out.println(String.format("Group '%s' for a new contact is absent!", groupName));
+            }
         }
     }
 

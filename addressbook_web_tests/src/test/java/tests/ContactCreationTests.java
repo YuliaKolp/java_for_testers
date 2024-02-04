@@ -30,14 +30,14 @@ public class ContactCreationTests extends TestBase {
         app.contacts().createContact(contactWithName);
     }
 
-    /*@Test
+    @Test
     public void canAddContactWithNotEmptyGroup() {
         app.contacts().createContact(
-                new ContactData("Sam", "Mickel", "Doedoe", "nick", "QA",
+                new ContactData("Sammy", "Mickel", "Doedoe", "nick", "QA",
                         "QAInc", "green st", "7", "123", "456", "789",
                         "jdoe@qamail.com", "jdoe2@qamail.com", "jdoe3@qamail.com",
                         "www.jdoe.com", "15", "September", "2001",
-                        "12", "April", "1991", "Lalal"));
-    }*/
+                        "12", "April", "1991", "abc"));
+    }
 
 }
