@@ -1,6 +1,5 @@
 package manager;
 
-import model.ContactData;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -9,7 +8,7 @@ public class ApplicationManager {
     protected WebDriver driver;
     private LoginHelper session;
     private GroupHelper groups;
-    private ContactHelper contacts;
+    public ContactHelper contacts;
 
     public void init(String browser) {
         if (driver == null) {
@@ -54,16 +53,6 @@ public class ApplicationManager {
             return true;
         } catch (NoSuchElementException exception) {
             return false;
-        }
-    }
-
-    public boolean isContactPresent() {return isElementPresent(By.name("selected[]"));
-    }
-
-    public void openContactPage() {
-        if (!isElementPresent(By.name("Enter"))) {
-            //click(By.linkText("add new"));
-            driver.findElement(By.linkText("add new")).click();
         }
     }
 

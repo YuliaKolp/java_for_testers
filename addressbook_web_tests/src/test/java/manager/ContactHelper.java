@@ -71,4 +71,13 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
+    public void openContactPage(ApplicationManager applicationManager) {
+        if (!applicationManager.isElementPresent(By.name("Enter"))) {
+            //click(By.linkText("add new"));
+            applicationManager.driver.findElement(By.linkText("add new")).click();
+        }
+    }
+
+    public boolean isContactPresent(ApplicationManager applicationManager) {return applicationManager.isElementPresent(By.name("selected[]"));
+    }
 }
