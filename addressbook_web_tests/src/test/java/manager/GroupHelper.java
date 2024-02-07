@@ -14,14 +14,6 @@ public class GroupHelper extends HelperBase {
             click(By.linkText("groups"));
         }
     }
-
-    /* TO REMOVE
-    public boolean isGroupPresent() {
-        openGroupsPage();
-        return manager.isElementPresent(By.name("selected[]"));
-    }
-    */
-
     public void createGroup(GroupData group) {
         openGroupsPage();
         initGroupCreation();
