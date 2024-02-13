@@ -44,7 +44,6 @@ public class GroupCreationTests extends TestBase {
     public void canCreateMultipleGroups(GroupData group) {
         var oldGroups = app.groups().getList();
         app.groups().createGroup(group);
-        int newGroupCount = app.groups().getCount();
         var newGroups = app.groups().getList();
         Comparator<GroupData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
