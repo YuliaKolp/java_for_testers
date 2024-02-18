@@ -43,34 +43,44 @@ public class ContactCreationTests extends TestBase {
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateMultipleContacts(ContactData contact) {
-        var oldContacts = app.contacts().getList();
-        app.contacts().createContact(contact);
-        var newContacts = app.contacts().getList();
-        var newContact = newContacts.get(newContacts.size()-1);
-        // First name
+        System.out.println("-----------------------------------------------------");
+        //Sort functions
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
         Comparator<ContactData> compareByName = (o1, o2) -> {
             return String.CASE_INSENSITIVE_ORDER.compare(o1.name(),o2.name());
         };
-        newContacts.sort(compareByName);
-        // Middle name
-        Comparator<ContactData> compareByMiddleName = (o1, o2) -> {
-            return String.CASE_INSENSITIVE_ORDER.compare(o1.middlename(),o2.middlename());
-        };
-        newContacts.sort(compareByMiddleName);
-        // Last name
         Comparator<ContactData> compareByLastName = (o1, o2) -> {
             return String.CASE_INSENSITIVE_ORDER.compare(o1.lastname(),o2.lastname());
         };
-        newContacts.sort(compareByLastName);
+        //get current groups
+        var oldContacts = app.contacts().getList();
+        //create contact
+        app.contacts().createContact(contact);
+        var newContacts = app.contacts().getList();
+        //sort new contacts by ID
+        newContacts.sort(compareById);
+        var newContact = newContacts.get(newContacts.size()-1);
+        System.out.println(String.format("New id is '%s', name '%s'", newContact.id(), newContact.name()));
 
+        //expected
         var expectedList = new ArrayList<>(oldContacts);
-
         expectedList.add(contact.withId(newContact.id())
                 .withFirstName(newContact.name())
                 .withMiddleName(newContact.middlename())
                 .withLastName(newContact.lastname()));
 
+        //sort and check
+        expectedList.sort(compareByName);
+        expectedList.sort(compareByLastName);
+        newContacts.sort(compareByName);
+        newContacts.sort(compareByLastName);
+
+        Assertions.assertEquals(expectedList, newContacts) ;
     }
+
+
 /*
     @Test
     public void canAddContactWithNotEmptyGroup() {

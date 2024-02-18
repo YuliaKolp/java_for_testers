@@ -6,8 +6,8 @@ public record ContactData(String id, String name, String middlename, String last
                           String byear, String aday, String amonth, String ayear, String group) {
     public ContactData() {
         this("", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "",
-                "", "", "", "");
+                "", "", "", "", "", "", "-", "-", "",
+                "-", "-", "", "");
 
     }
 
@@ -31,7 +31,7 @@ public record ContactData(String id, String name, String middlename, String last
     }
 
     public ContactData withLastName(String lastname) {
-        return new ContactData("", this.name, this.middlename, lastname, this.nickname,  this.title, this.company,
+        return new ContactData(this.id, this.name, this.middlename, lastname, this.nickname,  this.title, this.company,
                 this.address, this.home, this.mobile, this.work, this.fax, this.email, this.email2, this.email3,
                 this.homepage, this.bday, this.bmonth, this.byear, this.aday, this.amonth, this.ayear, this.group);
     }

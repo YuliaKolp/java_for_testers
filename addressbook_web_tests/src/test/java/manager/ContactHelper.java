@@ -1,10 +1,10 @@
 package manager;
 
 import model.ContactData;
-import model.GroupData;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactHelper extends HelperBase {
@@ -35,6 +35,26 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector(String.format("input[value='%s']",contact.id())));
     }
 
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
+        //openContactPage();
+        //selectContact(contact);
+        getInitContactModification(contact.id());
+        fillContactForm(modifiedContact);
+        submitContactModification();
+        returnToContactsPage();
+    }
+
+    private void getInitContactModification(String id) {
+        click(By.xpath(String.format("//a[@href=\'edit.php?id=%s\']/img",id)));
+    }
+
+    private void submitContactModification() {
+        click(By.name("update"));
+    }
+
+    private void returnToContactsPage() {
+        click(By.linkText("home"));
+    }
 
     private void initContactCreation() {
         click(By.linkText("add new"));
@@ -116,13 +136,18 @@ public class ContactHelper extends HelperBase {
         //openGroupsPage();
         var contacts = new ArrayList<ContactData>();
         var trs = manager.driver.findElements(By.name("entry"));
-
+        //go through table rows
         for (var tr:trs) {
-            var name = tr.getText();
             var checkbox = tr.findElement(By.name("selected[]"));
             var id = checkbox.getAttribute("value");
-            contacts.add(new ContactData().withId(id).withFirstName(name));
+            var lastName = tr.findElement(By.xpath("td[2]")).getText();
+            var firstName = tr.findElement(By.xpath("td[3]")).getText();
+            var address = tr.findElement(By.xpath("td[4]")).getText();
+            ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
+            contacts.add(contact);
         }
         return contacts;
     }
+
+
 }

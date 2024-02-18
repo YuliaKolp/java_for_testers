@@ -10,7 +10,7 @@ import java.util.Random;
 public class ContactRemovalTests extends TestBase {
 
     @Test
-    public void canRemoveContact(){
+    public void canModifyContact(){
         if (app.contacts().getList().size() == 0){
             app.contacts().openContactsPage(app);
             app.contacts().createContact(new ContactData().withFirstName("toRemove"));
