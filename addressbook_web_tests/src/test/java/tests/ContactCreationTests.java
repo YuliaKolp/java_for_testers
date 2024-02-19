@@ -3,6 +3,7 @@ package tests;
 import model.ContactData;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -80,16 +81,13 @@ public class ContactCreationTests extends TestBase {
         Assertions.assertEquals(expectedList, newContacts) ;
     }
 
-
-/*
     @Test
-    public void canAddContactWithNotEmptyGroup() {
-        app.contacts().createContact(
-                new ContactData("Sammy", "Mickel", "Doedoe", "nick", "QA",
-                        "QAInc", "green st", "7", "123", "456", "789",
-                        "jdoe@qamail.com", "jdoe2@qamail.com", "jdoe3@qamail.com",
-                        "www.jdoe.com", "15", "September", "2001",
-                        "12", "April", "1991", "abc"));
+    public void canCreateContact() {
+        var contact = new ContactData()
+                .withFirstName(randomString(10))
+                .withLastName(randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        app.contacts().createContact(contact);
     }
-*/
+
 }
