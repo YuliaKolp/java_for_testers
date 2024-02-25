@@ -1,43 +1,44 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunctions;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
-    public static List<ContactData> contactProvider() {
+    public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-        for (var name : List.of("", "ContactName")){
-            for (var middleame : List.of("", "ContactMiddleName")){
-                for (var lastname : List.of("", "ContactLastName")){
-                   //for (var nickname : List.of("", "ContactNickName")) {
-                        //for (var title : List.of("", "ContactTitle")) {
-                            //for (var company : List.of("", "ContactCompany")) {
-                                //for (var address : List.of("", "ContactTitle")) {
-                                    result.add(new ContactData()
-                                            .withFirstName(name)
-                                            .withMiddleName(middleame)
-                                            .withLastName(lastname));
-                                //}
-                            //}
-                        //}
-                    //}
-                }
-            }
-        }
+//        for (var name : List.of("", "ContactName")){
+//            for (var middleame : List.of("", "ContactMiddleName")){
+//                for (var lastname : List.of("", "ContactLastName")){
+//                    result.add(new ContactData()
+//                            .withFirstName(name)
+//                            .withMiddleName(middleame)
+//                            .withLastName(lastname));
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < 5; i++){
+//            result.add(new ContactData()
+//                    .withFirstName(CommonFunctions.randomString(i*5)).withMiddleName(CommonFunctions.randomString(i*5)).withLastName(CommonFunctions.randomString(i*5)));
+//        }
 
-        for (int i = 0; i < 5; i++){
-            result.add(new ContactData()
-                    .withFirstName(CommonFunctions.randomString(i*5)).withMiddleName(CommonFunctions.randomString(i*5)).withLastName(CommonFunctions.randomString(i*5)));
-        }
+        var mapper = new XmlMapper();
+        var value = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {});
+        result.addAll(value);
         return result;
     }
 
@@ -63,7 +64,7 @@ public class ContactCreationTests extends TestBase {
         //sort new contacts by ID
         newContacts.sort(compareById);
         var newContact = newContacts.get(newContacts.size()-1);
-        System.out.println(String.format("New id is '%s', name '%s'", newContact.id(), newContact.name()));
+        System.out.printf("New id is '%s', name '%s'%n", newContact.id(), newContact.name());
 
         //expected
         var expectedList = new ArrayList<>(oldContacts);
@@ -87,6 +88,14 @@ public class ContactCreationTests extends TestBase {
                 .withFirstName(CommonFunctions.randomString(10))
                 .withLastName(CommonFunctions.randomString(10))
                 .withPhoto(CommonFunctions.randomFile("src/test/resources/images"));
+        app.contacts().createContact(contact);
+    }
+
+    @Test
+    public void canCreateContactNoPhoto() {
+        var contact = new ContactData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(10));
         app.contacts().createContact(contact);
     }
 

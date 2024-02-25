@@ -18,7 +18,7 @@ public class ContactRemovalTests extends TestBase {
         var oldContacts  = app.contacts().getList();
         var rnd = new Random();
         var index = rnd.nextInt(oldContacts.size());
-        System.out.println(String.format("Index is '%s'",index));
+        System.out.printf("Index is '%s'%n",index);
         app.contacts().removeContact(oldContacts.get(index));
         var newContacts = app.contacts().getList();
         var expectedList = new ArrayList<>(oldContacts);

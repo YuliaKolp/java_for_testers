@@ -26,7 +26,7 @@ public class ContactHelper extends HelperBase {
         //manager.driver.switchTo().alert().accept();
     }
     private void removeSelectedContacts() {
-        click(By.xpath("//input[@value=\'Delete\']"));
+        click(By.xpath("//input[@value='Delete']"));
         manager.openHomePage();
     }
 
@@ -45,7 +45,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void getInitContactModification(String id) {
-        click(By.xpath(String.format("//a[@href=\'edit.php?id=%s\']/img",id)));
+        click(By.xpath(String.format("//a[@href='edit.php?id=%s']/img",id)));
     }
 
     private void submitContactModification() {
@@ -65,7 +65,10 @@ public class ContactHelper extends HelperBase {
         type(By.name("middlename"), contact.middlename());
         type(By.name("lastname"), contact.lastname());
         type(By.name("nickname"), contact.nickname());
-        attach(By.name("photo"), contact.photo());
+        //photo
+        if (!contact.photo().isEmpty()){
+            attach(By.name("photo"), contact.photo());
+        }
         type(By.name("title"), contact.title());
         type(By.name("company"), contact.company());
         type(By.name("address"), contact.address());
@@ -92,7 +95,7 @@ public class ContactHelper extends HelperBase {
             try {
                 dropDownType(By.name("new_group"), groupName);
             } catch (org.openqa.selenium.NoSuchElementException exception) {
-                System.out.println(String.format("Group '%s' for a new contact is absent!", groupName));
+                System.out.printf("Group '%s' for a new contact is absent!%n", groupName);
             }
         }
     }

@@ -23,11 +23,11 @@ public class ContactModificationTests  extends TestBase {
         //System.out.println(oldContacts);
         var rnd = new Random();
         var index = rnd.nextInt(oldContacts.size());
-        System.out.println(String.format("Index is '%s'",index));
+        System.out.printf("Index is '%s'%n",index);
         var testData = new ContactData().withFirstName(newFirstName);
         // modify and get new list
         var contactToModify = oldContacts.get(index);
-        System.out.println(String.format("Contact ID is '%s', 1st name is '%s'",contactToModify.id(), contactToModify.name()));
+        System.out.printf("Contact ID is '%s', 1st name is '%s'%n",contactToModify.id(), contactToModify.name());
         app.contacts().modifyContact(contactToModify, testData);
         var newContacts = app.contacts().getList();
 
