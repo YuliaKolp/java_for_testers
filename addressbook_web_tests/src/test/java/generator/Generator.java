@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// Config!!!!
+// --type groups --output groups.json --format json --count 3
+//
 public class Generator {
 
     @Parameter(names={"--type", "-t"})
@@ -79,6 +82,12 @@ public class Generator {
     }
 
     private void save(Object data) throws IOException {
+        // check format
+        if (!("json".equals(format)) & (!("yaml".equals(format))) & (!("xml".equals(format))))
+            {
+            throw new IllegalArgumentException("Unknown data format " + format);
+        }
+        // generate data to test
         if ("json".equals(format)){
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -89,18 +98,17 @@ public class Generator {
             }
             //writer.close();
             //mapper.writeValueAsString(new File(output), data);
-        } if ("yaml".equals(format)) {
+        }
+        if ("yaml".equals(format)) {
             var mapper = new YAMLMapper();
             mapper.writeValue(new File(output), data);
         }
-        if ("xml".equals(format)) {
+        if ("xml".equals(format))
+        {
             var mapper = new XmlMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             mapper.writeValue(new File(output), data);
         }
-        else
-        {
-            throw new IllegalArgumentException("Unknown data format " + format);
-        }
+
     }
 }
