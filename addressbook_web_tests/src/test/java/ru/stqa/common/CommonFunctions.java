@@ -1,4 +1,4 @@
-package common;
+package ru.stqa.common;
 
 import java.io.File;
 import java.nio.file.Paths;

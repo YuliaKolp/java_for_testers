@@ -1,7 +1,7 @@
-package manager;
+package ru.stqa.manager;
 
-import manager.hbm.GroupRecord;
-import model.GroupData;
+import ru.stqa.manager.hbm.GroupRecord;
+import ru.stqa.model.GroupData;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -15,8 +15,7 @@ public class HibernateHelper extends HelperBase{
     public HibernateHelper (ApplicationManager manager) {
         super(manager);
 
-        SessionFactory sessionFactory =
-                new Configuration()
+        sessionFactory  = new Configuration()
                         //.addAnnotatedClass(Book.class)
                         .addAnnotatedClass(GroupRecord.class)
                         .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")

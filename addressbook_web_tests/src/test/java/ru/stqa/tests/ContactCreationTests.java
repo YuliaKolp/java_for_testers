@@ -1,10 +1,9 @@
-package tests;
+package ru.stqa.tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import common.CommonFunctions;
-import model.ContactData;
-import model.GroupData;
+import ru.stqa.common.CommonFunctions;
+import ru.stqa.model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

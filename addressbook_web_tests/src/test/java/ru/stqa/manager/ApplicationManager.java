@@ -1,4 +1,4 @@
-package manager;
+package ru.stqa.manager;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;

@@ -1,10 +1,9 @@
-package manager.hbm;
+package ru.stqa.manager.hbm;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import model.GroupData;
 
 @Entity
 @Table(name = "group_list")

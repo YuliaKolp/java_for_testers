@@ -1,4 +1,4 @@
-package generator;
+package ru.stqa.generator;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -6,16 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import common.CommonFunctions;
-import model.ContactData;
-import model.GroupData;
-import org.yaml.snakeyaml.Yaml;
+import ru.stqa.common.CommonFunctions;
+import ru.stqa.model.ContactData;
+import ru.stqa.model.GroupData;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 // Config!!!!
 // --type groups --output groups.json --format json --count 3

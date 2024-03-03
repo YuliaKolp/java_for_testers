@@ -1,9 +1,8 @@
-package tests;
+package ru.stqa.tests;
 
-import manager.ApplicationManager;
+import ru.stqa.manager.ApplicationManager;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;

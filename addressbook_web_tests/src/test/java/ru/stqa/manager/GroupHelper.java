@@ -1,6 +1,6 @@
-package manager;
+package ru.stqa.manager;
 
-import model.GroupData;
+import ru.stqa.model.GroupData;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;

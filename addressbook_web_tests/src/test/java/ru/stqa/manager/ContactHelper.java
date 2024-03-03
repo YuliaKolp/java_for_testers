@@ -1,10 +1,9 @@
-package manager;
+package ru.stqa.manager;
 
-import model.ContactData;
+import ru.stqa.model.ContactData;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ContactHelper extends HelperBase {
