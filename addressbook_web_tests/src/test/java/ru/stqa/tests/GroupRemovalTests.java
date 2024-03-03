@@ -14,7 +14,6 @@ public class GroupRemovalTests extends TestBase {
         if (app.hbm().getGroupCount() == 0){
             app.hbm().createGroup(new GroupData("", "group name!!!!", "group header", "group footer"));
         }
-        //var oldGroups  = app.groups().getList();
         var oldGroups  = app.hbm().getGroupList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
