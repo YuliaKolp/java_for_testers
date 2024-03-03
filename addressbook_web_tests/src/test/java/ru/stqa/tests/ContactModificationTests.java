@@ -14,11 +14,11 @@ public class ContactModificationTests  extends TestBase {
     public void canModifyContact(){
         String newFirstName = "modifiedName";
         //check contact presence
-        if (app.contacts().getList().size() == 0){
+        if (app.jdbc().getContactList().size() == 0){
             app.contacts().openContactsPage(app);
             app.contacts().createContact(new ContactData().withFirstName("toModify"));
         }
-        var oldContacts = app.contacts().getList();
+        var oldContacts = app.jdbc().getContactList();
 
         //System.out.println(oldContacts);
         var rnd = new Random();
@@ -29,7 +29,7 @@ public class ContactModificationTests  extends TestBase {
         var contactToModify = oldContacts.get(index);
         System.out.printf("Contact ID is '%s', 1st name is '%s'%n",contactToModify.id(), contactToModify.name());
         app.contacts().modifyContact(contactToModify, testData);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.jdbc().getContactList();
 
         // expected
         var expectedList = new ArrayList<>(oldContacts);

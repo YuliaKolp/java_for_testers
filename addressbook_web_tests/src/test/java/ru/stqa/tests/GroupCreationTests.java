@@ -17,17 +17,7 @@ import java.util.List;
 public class GroupCreationTests extends TestBase {
 
     public static List<GroupData> groupProvider() throws IOException {
-        var result = new ArrayList<GroupData>();/*
-        for (var name : List.of("", "group name")){
-            for (var header : List.of("", "group header")){
-                for (var footer : List.of("", "group footer")){
-                    result.add(new GroupData()
-                            .withName(name)
-                            .withHeader(header)
-                            .withFooter(footer));
-                }
-            }
-        }*/
+        var result = new ArrayList<GroupData>();
 //        var json = "";
 //        try (var reader = new FileReader("groups.json");
 //             var breader = new BufferedReader(reader)
@@ -42,7 +32,6 @@ public class GroupCreationTests extends TestBase {
         //var json = Files.readString(Paths.get("groups.json"));
         //ObjectMapper mapper = new ObjectMapper();
         var mapper = new XmlMapper();
-
 
         //var value = mapper.readValue(new File("groups.json"), new TypeReference<List<GroupData>>() {});
         //var value = mapper.readValue(json, new TypeReference<List<GroupData>>() {});
@@ -66,15 +55,14 @@ public class GroupCreationTests extends TestBase {
     }
 
     @ParameterizedTest
-    //@MethodSource("groupProvider")
     @MethodSource("singleRandomGroup")
     public void canCreateGroup(GroupData group) {
         //var oldGroups = app.groups().getList();
         var oldGroups = app.jdbc().getGroupList();
 
         app.groups().createGroup(group);
-        //var newGroups = app.groups().getList();
         var newGroups = app.jdbc().getGroupList();
+        //Sort functions
         Comparator<GroupData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
@@ -85,15 +73,35 @@ public class GroupCreationTests extends TestBase {
         expectedList.add(group.withId(maxId));
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups, expectedList);
+
+        // get UI group list
         var newUiGroups = app.groups().getList();
+        newUiGroups.sort(compareById);
+        // compare UI and DB lists
+        var uiGroupsSize = newUiGroups.size();
+        var newGroupsSize = newGroups.size();
+        if (uiGroupsSize == newGroupsSize){
+            for (var i = 0; i < uiGroupsSize; i++){
+                var uiId = newUiGroups.get(i).id();
+                var id = newGroups.get(i).id();
+                var uiName = newUiGroups.get(i).name();
+                var name = newGroups.get(i).name();
+                Assertions.assertEquals(id, uiId);
+                Assertions.assertEquals(name, uiName);
+            }
+        }
+        else {
+            throw new RuntimeException(String.format("ERROR: UI groups size '%s' is different to DB groups size '%s'.", uiGroupsSize, newGroupsSize));
+        }
     }
 
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")
     public void cannnotCreateMultipleGroups(GroupData group) {
-        var oldGroups = app.groups().getList();
+        var oldGroups = app.hbm().getGroupCount();
         app.groups().createGroup(group);
-        var newGroups = app.groups().getList();
+        //app.hbm().createGroup(group); // it is possible to use special chars when object is created not with UI
+        var newGroups = app.hbm().getGroupCount();
         Assertions.assertEquals(newGroups, oldGroups);
     }
 }

@@ -19,22 +19,6 @@ public class ContactCreationTests extends TestBase {
 
     public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-//        for (var name : List.of("", "ContactName")){
-//            for (var middleame : List.of("", "ContactMiddleName")){
-//                for (var lastname : List.of("", "ContactLastName")){
-//                    result.add(new ContactData()
-//                            .withFirstName(name)
-//                            .withMiddleName(middleame)
-//                            .withLastName(lastname));
-//                }
-//            }
-//        }
-//
-//        for (int i = 0; i < 5; i++){
-//            result.add(new ContactData()
-//                    .withFirstName(CommonFunctions.randomString(i*5)).withMiddleName(CommonFunctions.randomString(i*5)).withLastName(CommonFunctions.randomString(i*5)));
-//        }
-
         var mapper = new XmlMapper();
         var value = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {});
         result.addAll(value);
@@ -55,11 +39,14 @@ public class ContactCreationTests extends TestBase {
         Comparator<ContactData> compareByLastName = (o1, o2) -> {
             return String.CASE_INSENSITIVE_ORDER.compare(o1.lastname(),o2.lastname());
         };
+        Comparator<ContactData> compareByMiddleName = (o1, o2) -> {
+            return String.CASE_INSENSITIVE_ORDER.compare(o1.middlename(),o2.middlename());
+        };
         //get current groups
-        var oldContacts = app.contacts().getList();
+        var oldContacts = app.jdbc().getContactList();
         //create contact
         app.contacts().createContact(contact);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.jdbc().getContactList();
         //sort new contacts by ID
         newContacts.sort(compareById);
         var newContact = newContacts.get(newContacts.size()-1);
@@ -67,15 +54,14 @@ public class ContactCreationTests extends TestBase {
 
         //expected
         var expectedList = new ArrayList<>(oldContacts);
-        expectedList.add(contact.withId(newContact.id())
-                .withFirstName(newContact.name())
-                .withMiddleName(newContact.middlename())
-                .withLastName(newContact.lastname()));
+        expectedList.add(contact.withId(newContact.id()));
 
         //sort and check
         expectedList.sort(compareByName);
+        expectedList.sort(compareByMiddleName);
         expectedList.sort(compareByLastName);
         newContacts.sort(compareByName);
+        newContacts.sort(compareByMiddleName);
         newContacts.sort(compareByLastName);
 
         Assertions.assertEquals(expectedList, newContacts) ;

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 // Config!!!!
 // --type groups --output groups.json --format json --count 3
-//
+// --type contacts --output contacts.xml --format xml --count 3
 public class Generator {
 
     @Parameter(names={"--type", "-t"})

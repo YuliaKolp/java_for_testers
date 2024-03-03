@@ -1,5 +1,6 @@
 package ru.stqa.manager;
 
+import ru.stqa.model.ContactData;
 import ru.stqa.model.GroupData;
 
 import java.sql.DriverManager;
@@ -27,5 +28,25 @@ public JdbcHelper(ApplicationManager manager) {super(manager); }
             throw new RuntimeException(e);
         }
         return groups;
+    }
+
+    public List<ContactData> getContactList() {
+        var contacts = new ArrayList<ContactData>();
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
+             var statement = conn.createStatement();
+             var result = statement.executeQuery("SELECT id, firstname, middlename, lastname FROM addressbook"))
+        {
+            while (result.next()){
+                contacts.add(new ContactData()
+                        .withId(result.getString("id"))
+                        .withFirstName(result.getString("firstname"))
+                        .withMiddleName(result.getString("middlename"))
+                        .withLastName(result.getString("lastname"))
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return contacts;
     }
 }

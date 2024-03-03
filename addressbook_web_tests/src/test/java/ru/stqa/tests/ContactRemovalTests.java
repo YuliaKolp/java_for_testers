@@ -11,7 +11,7 @@ public class ContactRemovalTests extends TestBase {
 
     @Test
     public void canModifyContact(){
-        if (app.contacts().getList().size() == 0){
+        if (app.jdbc().getContactList().size() == 0){
             app.contacts().openContactsPage(app);
             app.contacts().createContact(new ContactData().withFirstName("toRemove"));
         }
@@ -29,7 +29,7 @@ public class ContactRemovalTests extends TestBase {
 
     @Test
     public void canRemoveAllContacts(){
-        if (app.contacts().getCount() == 0){
+        if (app.jdbc().getContactList().size() == 0){
             app.contacts().openContactsPage(app);
             app.contacts().createContact(new ContactData().withFirstName("toRemove"));
         }
