@@ -1,7 +1,9 @@
 package ru.stqa.manager;
 
+import org.openqa.selenium.support.ui.Select;
 import ru.stqa.model.ContactData;
 import org.openqa.selenium.By;
+import ru.stqa.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,20 @@ public class ContactHelper extends HelperBase {
         submitContactCreation();
         returnToHomePage();
     }
+
+    public void createContact(ContactData contact, GroupData group){
+        //openContactPage();
+        initContactCreation();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+    }
+
 
     public void removeContact(ContactData contact) {
         selectContact(contact);
