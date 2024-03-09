@@ -69,11 +69,11 @@ public class ContactCreationTests extends TestBase {
     }
 
     @Test
-    public void canCreateContact() {
+    public void canCreateContactWithPhoto() {
         var contact = new ContactData()
                 .withFirstName(CommonFunctions.randomString(10))
                 .withLastName(CommonFunctions.randomString(10))
-                .withPhoto(CommonFunctions.randomFile("src/test/resources/images"));
+                .withPhoto(TestBase.randomFile("src/test/resources/images"));
         app.contacts().createContact(contact);
     }
 
@@ -90,9 +90,9 @@ public class ContactCreationTests extends TestBase {
         var contact = new ContactData()
                 .withFirstName(CommonFunctions.randomString(10))
                 .withLastName(CommonFunctions.randomString(10))
-                .withPhoto(CommonFunctions.randomFile("src/test/resources/images"));
+                .withPhoto(TestBase.randomFile("src/test/resources/images"));
         if (app.hbm().getGroupCount() == 0){
-            app.hbm().createGroup(new GroupData("", "group name!!!!", "group header", "group footer"));
+            app.hbm().createGroup(new GroupData("", "groupNameToCreate", "group header", "group footer"));
         }
         var group  = app.hbm().getGroupList().get(0);
 
@@ -101,7 +101,6 @@ public class ContactCreationTests extends TestBase {
         var newRelated = app.hbm().getContactsInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
         // add comparison by content
-
     }
 
 }

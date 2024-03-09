@@ -27,10 +27,11 @@ public class HibernateHelper extends HelperBase{
                         .buildSessionFactory();
     }
 
-    static List<GroupData> convertList(List<GroupRecord> records) {
+    static List<GroupData> convertGroupList(List<GroupRecord> records) {
         List<GroupData> result = new ArrayList<>();
         for (var record : records) {
             result.add(convert(record));
+
         }
         return result;
     }
@@ -60,6 +61,7 @@ public class HibernateHelper extends HelperBase{
                 .withFirstName(record.firstname)
                 .withLastName(record.lastname)
                 .withAddress(record.address);
+                //.withGroupName(record.groupName);
     }
 
     private static ContactRecord convert(ContactData data) {
@@ -68,11 +70,12 @@ public class HibernateHelper extends HelperBase{
             id = "0";
         }
         return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address());
+        //return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address(), data.groupName());
     }
 
 
     public List<GroupData> getGroupList(){
-        return convertList(sessionFactory.fromSession(session -> {
+        return convertGroupList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord", GroupRecord.class).list();
         }));
     }

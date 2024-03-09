@@ -1,5 +1,6 @@
 package ru.stqa.manager;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.Select;
 import ru.stqa.model.ContactData;
 import org.openqa.selenium.By;
@@ -52,14 +53,28 @@ public class ContactHelper extends HelperBase {
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         //openContactPage();
-        //selectContact(contact);
-        getInitContactModification(contact.id());
+        selectContactById(contact.id());
         fillContactForm(modifiedContact);
         submitContactModification();
         returnToContactsPage();
     }
 
-    private void getInitContactModification(String id) {
+    public void addContact(ContactData contact, GroupData group) {
+        selectContact(contact);
+        selectGroupToAdd(group);
+        submitContactAddition();
+    }
+
+
+    private void submitContactAddition() {
+        click(By.name("add"));
+    }
+
+    private void selectGroupToAdd(GroupData group) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
+    }
+
+    private void selectContactById(String id) {
         click(By.xpath(String.format("//a[@href='edit.php?id=%s']/img",id)));
     }
 
@@ -109,7 +124,7 @@ public class ContactHelper extends HelperBase {
         if (!groupName.isEmpty()) {
             try {
                 dropDownType(By.name("new_group"), groupName);
-            } catch (org.openqa.selenium.NoSuchElementException exception) {
+            } catch (NoSuchElementException exception) {
                 System.out.printf("Group '%s' for a new contact is absent!%n", groupName);
             }
         }
