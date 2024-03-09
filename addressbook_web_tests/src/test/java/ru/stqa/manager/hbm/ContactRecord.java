@@ -13,24 +13,22 @@ public class ContactRecord {
     public String lastname;
     public String address;
 
-    //public String group;
-
-    /*public String groupName;
+    public String group;
 
     @ManyToMany//(fetch = )
     @JoinTable(name = "address_in_groups",
-            joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
-    public List<GroupRecord> groups;*/
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public List<GroupRecord> groups;
 
     public ContactRecord(){}
 
-    public ContactRecord(int id, String firstname, String lastname, String address/*, String groupName*/){
+    public ContactRecord(int id, String firstname, String lastname, String address, String group){
         this.id= id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
-        //this.groupName = groupName;
+        this.group = group;
     }
 
 }

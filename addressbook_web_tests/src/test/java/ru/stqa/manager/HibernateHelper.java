@@ -60,8 +60,8 @@ public class HibernateHelper extends HelperBase{
         return new ContactData().withId("" + record.id)
                 .withFirstName(record.firstname)
                 .withLastName(record.lastname)
-                .withAddress(record.address);
-                //.withGroupName(record.groupName);
+                .withAddress(record.address)
+                .withGroup(record.group);
     }
 
     private static ContactRecord convert(ContactData data) {
@@ -69,8 +69,8 @@ public class HibernateHelper extends HelperBase{
         if ("".equals(id)){
             id = "0";
         }
-        return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address());
-        //return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address(), data.groupName());
+        //return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address());
+        return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address(), data.group());
     }
 
 
@@ -103,6 +103,12 @@ public class HibernateHelper extends HelperBase{
     public List<ContactData> getContactsInGroup(GroupData group) {
         return sessionFactory.fromSession(session -> {
             return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
+        });
+    }
+
+    public List<GroupData> getGroupsInContact(ContactData contact) {
+        return sessionFactory.fromSession(session -> {
+            return convertGroupList(session.get(ContactRecord.class, contact.id()).groups);
         });
     }
 }

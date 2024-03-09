@@ -69,7 +69,6 @@ public class ContactModificationTests  extends TestBase {
             var oldContacts = app.jdbc().getContactList();
             var rnd = new Random();
             var index = rnd.nextInt(oldContacts.size());
-            System.out.printf("Index is '%s'%n",index);
             var contact = oldContacts.get(index);
             System.out.printf("Contact name is '%s', group Id is '%s'", contact.name(), group.id());
             //Add to group
@@ -78,8 +77,8 @@ public class ContactModificationTests  extends TestBase {
             // Check
             var expectedList = new ArrayList<>(oldContacts);
 
-        System.out.println(newContacts);
-            expectedList.set(index, contact.withGroupName(group.name()));
+            System.out.println(newContacts);
+            expectedList.set(index, contact.withGroup(group.name()));
 
 
             //prepare to sort
