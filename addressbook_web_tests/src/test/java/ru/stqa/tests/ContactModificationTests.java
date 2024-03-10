@@ -1,5 +1,6 @@
 package ru.stqa.tests;
 
+import ru.stqa.common.CommonFunctions;
 import ru.stqa.model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,49 +55,92 @@ public class ContactModificationTests  extends TestBase {
 
     @Test
     public void canAddContactToGroup(){
-            // check if any group exists
-            if (app.hbm().getGroupCount() == 0){
-                app.hbm().createGroup(new GroupData("", "GroupForContactsToAdd", "group header", "group footer"));
-            }
-            var group  = app.hbm().getGroupList().get(0);
-            System.out.printf("Group is '%s'%n",group.id());
+        // Create a new group to make sure contact does not belong to it
+        var groupName = CommonFunctions.randomString(7);
+        app.hbm().createGroup(new GroupData("", groupName, "group header", "group footer"));
+        //refresh page to make new group appear
+        app.contacts().returnToContactsPage();
 
-            // work with contacts
-            if (app.jdbc().getContactList().size() == 0){
-                app.contacts().openContactsPage(app);
-                app.contacts().createContact(new ContactData().withFirstName("ContactToAddToGroup"));
-            }
-            var oldContacts = app.jdbc().getContactList();
-            var rnd = new Random();
-            var index = rnd.nextInt(oldContacts.size());
-            var contact = oldContacts.get(index);
-            System.out.printf("Contact name is '%s', group Id is '%s'", contact.name(), group.id());
-            //Add to group
-            app.contacts().addContact(contact, group);
-            var newContacts = app.jdbc().getContactList();
-            // Check
-            var expectedList = new ArrayList<>(oldContacts);
-
-            System.out.println(newContacts);
-            expectedList.set(index, contact.withGroup(group.name()));
-
-
-            //prepare to sort
-            Comparator<ContactData> compareByName = (o1, o2) -> {
-                return String.CASE_INSENSITIVE_ORDER.compare(o1.name(),o2.name());
-            };
-            Comparator<ContactData> compareByLastName = (o1, o2) -> {
-                return String.CASE_INSENSITIVE_ORDER.compare(o1.lastname(),o2.lastname());
-            };
-            //sort and check
-            expectedList.sort(compareByName);
-            expectedList.sort(compareByLastName);
-
-            newContacts.sort(compareByName);
-            newContacts.sort(compareByLastName);
-
-            Assertions.assertEquals(expectedList, newContacts);
-
+        // check if any contact exists
+        if (app.jdbc().getContactList().size() == 0){
+            app.contacts().openContactsPage(app);
+            app.contacts().createContact(new ContactData().withFirstName("ModifCont_" + CommonFunctions.randomString(4)));
         }
+        // work with contacts. Get random contact
+        var oldContacts = app.jdbc().getContactList();
+        var rnd = new Random();
+        var index = rnd.nextInt(oldContacts.size());
+        var contact = oldContacts.get(index);
+
+        // get contacts's groups
+        var oldRelatedGroups = app.hbm().getGroupsInContact(contact);
+        var groupToAdd  = app.hbm().getGroupList().get(app.hbm().getGroupList().size() - 1);
+
+        //Add to group-------------------------------------------------
+        System.out.printf("Contact name is '%s' and id is '%s'.", contact.name(), contact.id());
+        app.contacts().addContact(contact, groupToAdd);
+        var newRelatedGroups = app.hbm().getGroupsInContact(contact);
+
+        //prepare to sort contact's groups
+        Comparator<GroupData> compareByGroup = (o1, o2) -> {
+            return String.CASE_INSENSITIVE_ORDER.compare(o1.name(),o2.name());
+        };
+
+        // Check
+        var expectedRelatedGroups = new ArrayList<>(oldRelatedGroups);
+        expectedRelatedGroups.add(groupToAdd);
+
+        //sort and check
+        expectedRelatedGroups.sort(compareByGroup);
+        newRelatedGroups.sort(compareByGroup);
+        Assertions.assertEquals(expectedRelatedGroups, newRelatedGroups);
+    }
+
+    @Test
+    public void canRemoveContactFromGroup(){
+        // check if any contact exists
+        if (app.jdbc().getContactList().size() == 0){
+            app.contacts().openContactsPage(app);
+            app.contacts().createContact(new ContactData().withFirstName("ModifCont_" + CommonFunctions.randomString(4)));
+        }
+        // work with contacts. Get random contact
+        var oldContacts = app.jdbc().getContactList();
+        var rnd = new Random();
+        var index = rnd.nextInt(oldContacts.size());
+        var contact = oldContacts.get(index);
+
+        // get contact's groups. Add contact to group if necessary
+        var oldRelatedGroups = app.hbm().getGroupsInContact(contact);
+        if (oldRelatedGroups.size() == 0){
+            //create group and add contact to it
+            app.hbm().createGroup(new GroupData("", "group_" + CommonFunctions.randomString(4), "group header", "group footer"));
+            app.contacts().returnToContactsPage();
+            var groupToAdd  = app.hbm().getGroupList().get(app.hbm().getGroupList().size() - 1);
+            app.contacts().addContact(contact, groupToAdd);
+            app.contacts().returnToContactsPage();
+        }
+        //get group to remove from
+        oldRelatedGroups = app.hbm().getGroupsInContact(contact);
+        var groupToRemoveFrom =  oldRelatedGroups.get(0);
+        //Remove from group-------------------------------------------------
+        System.out.printf("Contact name is '%s' and id is '%s'. Group to remove from is '%s'", contact.name(), contact.id(), groupToRemoveFrom.name());
+        app.contacts().removeContactFromGroup(contact, groupToRemoveFrom);
+
+        var newRelatedGroups = app.hbm().getGroupsInContact(contact);
+
+        //prepare to sort contact's groups
+        Comparator<GroupData> compareByGroup = (o1, o2) -> {
+            return String.CASE_INSENSITIVE_ORDER.compare(o1.name(),o2.name());
+        };
+
+        // Expected list
+        var expectedRelatedGroups = new ArrayList<>(oldRelatedGroups);
+        expectedRelatedGroups.remove(groupToRemoveFrom);
+
+        //sort and check
+        expectedRelatedGroups.sort(compareByGroup);
+        newRelatedGroups.sort(compareByGroup);
+        Assertions.assertEquals(expectedRelatedGroups, newRelatedGroups);
+    }
 
 }
