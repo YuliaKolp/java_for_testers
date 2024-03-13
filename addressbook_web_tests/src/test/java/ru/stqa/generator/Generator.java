@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // Config!!!!
 // --type groups --output groups.json --format json --count 3
@@ -57,27 +60,28 @@ public class Generator {
 
     }
 
-    private Object generateGroups() {
-        var result = new ArrayList<GroupData>();
+    private Object generateData(Supplier<Object> dataSupplier) {
+        return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
+        /*var result = new ArrayList<Object>();
         for (int i = 0; i < count; i++){
-            result.add(new GroupData()
-                    .withName(CommonFunctions.randomString(i*10))
-                    .withHeader(CommonFunctions.randomString(i*10))
-                    .withFooter(CommonFunctions.randomString(i*10)));
+            result.add(dataSupplier.get());
         }
-        return result;
+        return result;*/
+    }
+
+    private Object generateGroups() {
+        return generateData(() -> new GroupData()
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(10))
+                .withFooter(CommonFunctions.randomString(10)));
     }
 
     private Object generateContacts() {
-        var result = new ArrayList<ContactData>();
-        for (int i = 0; i < 5; i++){
-            result.add(new ContactData()
-                    .withFirstName(CommonFunctions.randomString(i*5))
-                    .withMiddleName(CommonFunctions.randomString(i*5))
-                    .withLastName(CommonFunctions.randomString(i*5)));
-        }
-        return result;
-    }
+        return generateData(() -> new ContactData()
+                .withFirstName(CommonFunctions.randomString(5))
+                .withMiddleName(CommonFunctions.randomString(5))
+                .withLastName(CommonFunctions.randomString(5)));
+            }
 
     private void save(Object data) throws IOException {
         // check format

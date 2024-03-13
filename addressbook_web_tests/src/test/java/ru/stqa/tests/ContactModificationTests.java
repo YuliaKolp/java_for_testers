@@ -1,5 +1,6 @@
 package ru.stqa.tests;
 
+import org.hibernate.tool.schema.internal.exec.ScriptSourceInputFromUrl;
 import ru.stqa.common.CommonFunctions;
 import ru.stqa.model.ContactData;
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +10,7 @@ import ru.stqa.model.GroupData;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.logging.SocketHandler;
 
 public class ContactModificationTests  extends TestBase {
 
@@ -58,6 +60,7 @@ public class ContactModificationTests  extends TestBase {
         // Create a new group to make sure contact does not belong to it
         var groupName = CommonFunctions.randomString(7);
         app.hbm().createGroup(new GroupData("", groupName, "group header", "group footer"));
+        System.out.printf("Group name is '%s'", groupName);
         //refresh page to make new group appear
         app.contacts().returnToContactsPage();
 
@@ -74,7 +77,17 @@ public class ContactModificationTests  extends TestBase {
 
         // get contacts's groups
         var oldRelatedGroups = app.hbm().getGroupsInContact(contact);
-        var groupToAdd  = app.hbm().getGroupList().get(app.hbm().getGroupList().size() - 1);
+        var groups = app.hbm().getGroupList();
+        // sort groups by id
+        Comparator<GroupData> compareById = (o1,o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        groups.sort(compareById);
+        var groupToAdd  = groups.get(groups.size() - 1);
+        System.out.println();
+        System.out.printf("Group to add is '%s'", groupToAdd);
+        System.out.println(groupToAdd.name());
+        Assertions.assertEquals(groupName, groupToAdd.name());
 
         //Add to group-------------------------------------------------
         System.out.printf("Contact name is '%s' and id is '%s'.", contact.name(), contact.id());
@@ -115,7 +128,9 @@ public class ContactModificationTests  extends TestBase {
             //create group and add contact to it
             app.hbm().createGroup(new GroupData("", "group_" + CommonFunctions.randomString(4), "group header", "group footer"));
             app.contacts().returnToContactsPage();
-            var groupToAdd  = app.hbm().getGroupList().get(app.hbm().getGroupList().size() - 1);
+
+            var groups = app.hbm().getGroupList();
+            var groupToAdd  = groups.get(groups.size() - 1);
             app.contacts().addContact(contact, groupToAdd);
             app.contacts().returnToContactsPage();
         }
