@@ -83,4 +83,23 @@ public record ContactData(String id, String name, String middlename, String last
                 this.photo);
     }
 
+    public ContactData withEmail(String email) {
+        return new ContactData(this.id, this.name, this.middlename, this.lastname, this.nickname,  this.title, this.company,
+                this.address, this.home, this.mobile, this.work, this.secondary, this.fax, email, this.email2, this.email3,
+                this.homepage, this.bday, this.bmonth, this.byear, this.aday, this.amonth, this.ayear, this.group,
+                this.photo);
+    }
+    public ContactData withEmail2(String email2) {
+        return new ContactData(this.id, this.name, this.middlename, this.lastname, this.nickname,  this.title, this.company,
+                this.address, this.home, this.mobile, this.work, this.secondary, this.fax, this.email, email2, this.email3,
+                this.homepage, this.bday, this.bmonth, this.byear, this.aday, this.amonth, this.ayear, this.group,
+                this.photo);
+    }
+    public ContactData withEmail3(String email3) {
+        return new ContactData(this.id, this.name, this.middlename, this.lastname, this.nickname,  this.title, this.company,
+                this.address, this.home, this.mobile, this.work, this.secondary, this.fax, this.email, this.email2, email3,
+                this.homepage, this.bday, this.bmonth, this.byear, this.aday, this.amonth, this.ayear, this.group,
+                this.photo);
+    }
+
 }
