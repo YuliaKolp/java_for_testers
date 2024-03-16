@@ -51,6 +51,31 @@ public class ContactInfoTests extends TestBase{
         System.out.println(Emails);
         System.out.println(expected);
         Assertions.assertEquals(expected, Emails);
-
+    }
+    @Test
+    void testEditAndInfoData(){
+        // get contacts
+        var contacts = app.contacts().getList();
+        // check that contacts presents
+        Assertions.assertNotEquals(0, contacts.size());
+        //get 1st contact data
+        var contact = contacts.get(0);
+        String contactId = contact.id();
+        //get compound properties
+        var contactPhones = app.contacts().getPhones().get(contactId);
+        var contactAddress = app.contacts().getAddress().get(contactId);
+        var contactEmails =app.contacts().getEmails().get(contactId);
+        //get data from edit form
+        var editContactData = app.contacts().getUiEditContactData(contact);
+        var editContactDataEmails = String.join("\n", editContactData.get("email"),
+                editContactData.get("email2"), editContactData.get("email3"));
+        var editContactDataPhones = String.join("\n", editContactData.get("home"),
+                editContactData.get("mobile"), editContactData.get("work"));
+        //compare
+        Assertions.assertEquals(contact.name(), editContactData.get("firstname"));
+        Assertions.assertEquals(contact.lastname(), editContactData.get("lastname"));
+        Assertions.assertEquals(contactAddress, editContactData.get("address"));
+        Assertions.assertEquals(contactEmails, editContactDataEmails);
+        Assertions.assertEquals(contactPhones, editContactDataPhones);
     }
 }

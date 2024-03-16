@@ -56,11 +56,12 @@ public class ContactHelper extends HelperBase {
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         //openContactPage();
-        selectContactById(contact.id());
+        selectContactByIdToEdit(contact.id());
         fillContactForm(modifiedContact);
         submitContactModification();
         returnToContactsPage();
     }
+
 
     public void addContact(ContactData contact, GroupData group) {
         selectContact(contact);
@@ -90,7 +91,7 @@ public class ContactHelper extends HelperBase {
         new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
     }
 
-    private void selectContactById(String id) {
+    private void selectContactByIdToEdit(String id) {
         click(By.xpath(String.format("//a[@href='edit.php?id=%s']/img",id)));
     }
 
@@ -192,17 +193,16 @@ public class ContactHelper extends HelperBase {
             var id = checkbox.getAttribute("value");
             var lastName = tr.findElement(By.xpath("td[2]")).getText();
             var firstName = tr.findElement(By.xpath("td[3]")).getText();
-            var address = tr.findElement(By.xpath("td[4]")).getText();
-            ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
+
+            ContactData contact = new ContactData()
+                    .withId(id)
+                    .withFirstName(firstName)
+                    .withLastName(lastName);
             contacts.add(contact);
         }
         return contacts;
     }
 
-    public String getPhones(ContactData contact) {
-        return manager.driver.findElement(By.xpath(
-                String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
-    }
 
     public Map<String, String> getPhones() {
         var result = new HashMap<String, String>();
@@ -221,10 +221,7 @@ public class ContactHelper extends HelperBase {
         for (WebElement row:rows) {
             var id = row.findElement(By.tagName("input")).getAttribute("id");
             var address = row.findElements(By.tagName("td")).get(3).getText();
-            System.out.println(address);
             address = address.replaceAll("\\r\\n|\\r|\\n", "\n");
-            System.out.println(address);
-            System.out.println("--------");
             //text = text.replace(System.getProperty("line.separator"), "");
             result.put(id, address);
         }
@@ -239,5 +236,26 @@ public class ContactHelper extends HelperBase {
             result.put(id, emails);
         }
         return result;
+    }
+    public Map<String, String> getUiEditContactData(ContactData contact){
+        selectContactByIdToEdit(contact.id());
+        HashMap<String, String> contactUidata = new HashMap<>();
+        contactUidata.put("firstname" , "");
+        contactUidata.put("lastname", "");
+        contactUidata.put("address" , "");
+        contactUidata.put("home" , "");
+        contactUidata.put("mobile" , "");
+        contactUidata.put("work" , "");
+        contactUidata.put("email" , "");
+        contactUidata.put("email2" , "");
+        contactUidata.put("email3" , "");
+        //get fields data
+        var prop = "";
+        for (Map.Entry entry: contactUidata.entrySet()) {
+            prop = (String) entry.getKey();
+            var value = manager.driver.findElement(By.name(prop)).getAttribute("value");
+            contactUidata.put(prop, value);
+        }
+        return contactUidata;
     }
 }
