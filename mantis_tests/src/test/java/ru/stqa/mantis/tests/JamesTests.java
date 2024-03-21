@@ -1,4 +1,4 @@
-package tests;
+package ru.stqa.mantis.tests;
 
 //import org.apache.commons.exec.CommandLine;
 
@@ -11,6 +11,7 @@ public class JamesTests extends TestBase {
     void canCreateUser(){
         app.jamesCli().addUser(
                 String.format("%s@localhost", CommonFunctions.randomString(8)), "password");
+                //"user1@localhost", "password");
     }
 
 

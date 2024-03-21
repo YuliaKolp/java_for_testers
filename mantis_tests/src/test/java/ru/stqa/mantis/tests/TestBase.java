@@ -1,4 +1,4 @@
-package tests;
+package ru.stqa.mantis.tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import ru.stqa.mantis.manager.ApplicationManager;
