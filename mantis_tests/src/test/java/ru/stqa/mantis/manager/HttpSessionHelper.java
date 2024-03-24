@@ -10,7 +10,6 @@ public class HttpSessionHelper extends HelperBase{
     public HttpSessionHelper(ApplicationManager manager){
         super(manager);
         client = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager())).build();
-
     }
 
     public void signup(String username, String email, String password) {
