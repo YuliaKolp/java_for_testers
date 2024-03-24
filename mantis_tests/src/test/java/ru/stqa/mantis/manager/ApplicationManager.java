@@ -9,12 +9,9 @@ import java.util.Properties;
 
 public class ApplicationManager {
     private WebDriver driver;
-
     private String browser;
     private Properties properties;
-
     private SessionHelper sessionHelper;
-
     private HttpSessionHelper httpSessionHelper;
     private ru.stqa.mantis.manager.JamesCliHelper jamesCliHelper;
     private MailHelper mailHelper;
@@ -22,7 +19,6 @@ public class ApplicationManager {
     public void init(String browser, Properties properties) {
         this.browser = browser;
         this.properties = properties;
-
     }
 
     public WebDriver driver(){
