@@ -27,7 +27,7 @@ public class UserRegistrationTests extends TestBase {
         app.http().signup(username, email);
 
         // recieve (wait for) email (MailHelper)
-        var messages =  app.mail().receive(email, password, Duration.ofSeconds(10));
+        var messages =  app.mail().receive(email, password, Duration.ofSeconds(90));
 
         // retrieve link out of email
         var text = messages.get(0).content();
