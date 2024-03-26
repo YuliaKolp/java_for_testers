@@ -12,16 +12,19 @@ public class HttpSessionHelper extends HelperBase{
         client = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager())).build();
     }
 
-    public void signup(String username, String email, String password) {
+    public void signup(String username, String email) {
+        var url = String.format("%s/signup_page.php", manager.property("web.baseUrl"));
         RequestBody formBody = new FormBody.Builder()
                 .add("username", username)
                 .add("email", email)
                 .build();
+
         Request request = new Request.Builder()
-                .url(String.format("%S/signup_page.php", manager.property("web.baseUrl")))
+                .url(url)
                 .post(formBody)
                 .build();
         try (Response response = client.newCall(request).execute()) {
+            //System.out.println(request.toString());
             //System.out.println(response.body().string());
             if (!response.isSuccessful()) throw new RuntimeException("Unexpected code " + response);
         } catch (IOException e) {
@@ -71,7 +74,6 @@ public class HttpSessionHelper extends HelperBase{
                 .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new RuntimeException("Unexpected code " + response);
-            //System.out.println(response.body().string());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
