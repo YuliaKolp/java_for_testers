@@ -15,10 +15,10 @@ public class UserRegistrationTests extends TestBase {
     @Test
     void canRegisterUser(/*String username*/) {
         var password = "password";
-        //var username = "oslo";
+        //var username = "dmni";
         var username = CommonFunctions.randomString(4);
         var email = String.format("%s@localhost", username);
-        System.out.println(String.format("Email is '%s'. Password is '%s'", email, password));
+        System.out.println(String.format("Username is '%s'. Email is '%s'. Password is '%s'", username, email, password));
 
         // create user (email) on mail server (JamesHelper)
         app.jamesCli().addUser(email, "password");
@@ -27,20 +27,18 @@ public class UserRegistrationTests extends TestBase {
         app.http().signup(username, email);
 
         // recieve (wait for) email (MailHelper)
-        var messages =  app.mail().receive(email, password, Duration.ofSeconds(90));
+        var messages =  app.mail().receive(email, password, Duration.ofSeconds(60));
 
         // retrieve link out of email
         var text = messages.get(0).content();
-        System.out.println("-------------------");
-        System.out.println(text);
         var url = CommonFunctions.getUrl(text);
 
         // go to browser , go by link and register user (browser)
-        /*app.http().registerUser(url, username, password);
+        app.http().registerUser(url, username, password);
 
         // check that user can log in (HttpSessionHelper)
         app.http().login(username, password);
-        Assertions.assertTrue(app.http().isLoggedIn());*/
+        Assertions.assertTrue(app.http().isLoggedIn());
 
         // plan
         // create user (email) on mail server (JamesHelper) +

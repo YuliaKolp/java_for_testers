@@ -1,9 +1,12 @@
 package ru.stqa.mantis.manager;
 
 import okhttp3.*;
+import ru.stqa.mantis.common.CommonFunctions;
 
 import java.io.IOException;
 import java.net.CookieManager;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpSessionHelper extends HelperBase{
     OkHttpClient client;
@@ -12,11 +15,10 @@ public class HttpSessionHelper extends HelperBase{
         client = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager())).build();
     }
 
-    public void signup(String username, String email) {
+    public String getSignupToken(){
         var url = String.format("%s/signup_page.php", manager.property("web.baseUrl"));
+        String token= "";
         RequestBody formBody = new FormBody.Builder()
-                .add("username", username)
-                .add("email", email)
                 .build();
 
         Request request = new Request.Builder()
@@ -26,6 +28,30 @@ public class HttpSessionHelper extends HelperBase{
         try (Response response = client.newCall(request).execute()) {
             //System.out.println(request.toString());
             //System.out.println(response.body().string());
+            if (!response.isSuccessful()) throw new RuntimeException("Unexpected code " + response);
+            //get token
+            token= CommonFunctions.getSignUpToken(response.body().string());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return token;
+    }
+
+    public void signup(String username, String email) {
+        var token = getSignupToken();
+        var url = String.format("%s/signup.php", manager.property("web.baseUrl"));
+        RequestBody formBody = new FormBody.Builder()
+                .add("signup_token", token)
+                .add("username", username)
+                .add("email", email)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new RuntimeException("Unexpected code " + response);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -62,14 +88,50 @@ public class HttpSessionHelper extends HelperBase{
         }
     }
 
-    public void registerUser(String url, String username, String password){
+    public List<String> getRegisterIdAndToken(String url){
+        ArrayList<String> idAndToken = new ArrayList<>();
+
         RequestBody formBody = new FormBody.Builder()
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new RuntimeException("Unexpected code " + response);
+            var responseBody = response.body().string();
+            //get id
+            var id= CommonFunctions.getRegId(responseBody);
+            idAndToken.add(id);
+
+            //get token
+            var token = CommonFunctions.getRegToken(responseBody);
+            idAndToken.add(token);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return idAndToken;
+    }
+
+
+    public void registerUser(String url, String username, String password){
+        List<String> idAndToken = getRegisterIdAndToken(url);
+        var verify_user_id =  idAndToken.get(0);
+        var account_update_token = idAndToken.get(1);
+
+        var urlReg = String.format("%s/account_update.php", manager.property("web.baseUrl"));
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("verify_user_id", verify_user_id)
+                .add("account_update_token", account_update_token)
                 .add("realname", username)
                 .add("password", password)
                 .add("password_confirm", password)
                 .build();
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlReg)
                 .post(formBody)
                 .build();
         try (Response response = client.newCall(request).execute()) {
