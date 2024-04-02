@@ -55,25 +55,26 @@ public class UserCreationTests extends TestBase {
 
         // open creation form and send (browser)
         System.out.println(String.format("Email is '%s'. Password is '%s'", email, password));
-        /*app.http().signup(user, email);
+        app.http().signup(user.name(), email);
 
-        // recieve (wait for) email (MailHelper)
-        var messages =  app.mail().receive(email, password, Duration.ofSeconds(90));
+        // recieve (wait for) email (MailHelper)*/
+        var message =  app.developerMail().receive(user, Duration.ofSeconds(90));
 
         // retrieve link out of email
-        var text = messages.get(0).content();
-        var url = CommonFunctions.getUrl(text);
+        var url = CommonFunctions.getUrl(message);
+
 
         // go to browser , go by link and register user (browser)
-        app.http().registerUser(url, user, password);
+        app.http().registerUser(url, user.name(), password);
 
         // check that user can log in (HttpSessionHelper)
-        app.http().login(user, password);
-        Assertions.assertTrue(app.http().isLoggedIn());*/
+        app.http().login(user.name(), password);
+        Assertions.assertTrue(app.http().isLoggedIn());
     }
 
     @AfterEach
     void deleteMailUser(){
+        System.out.println("===============Delete");
         app.developerMail().deleteUser(user);
     }
 }

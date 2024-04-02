@@ -1,6 +1,7 @@
 package ru.stqa.mantis.manager;
 
 import okhttp3.*;
+import org.openqa.selenium.By;
 import ru.stqa.mantis.common.CommonFunctions;
 
 import java.io.IOException;
@@ -141,4 +142,17 @@ public class HttpSessionHelper extends HelperBase{
         }
 
     }
+
+    /*public void startCreation(String user){
+        //by AB
+        var email = String.format("%s@localhost", user);
+        if (!manager.session().isLoggedIn()){
+            manager.session().login(manager.property("web.username"), manager.property("web.password"));
+        }
+        manager.driver().get(String.format("%s/manager_user_create_page.php", manager.property("web.baseUrl")));
+        type(By.name("username"), user);
+        type(By.name("realname"), user);
+        type(By.name("email"), email);
+        click(By.cssSelector("input[type='submit']");
+    }*/
 }
