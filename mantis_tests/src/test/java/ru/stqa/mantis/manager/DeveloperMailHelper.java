@@ -64,8 +64,8 @@ public class DeveloperMailHelper extends HelperBase{
         while (System.currentTimeMillis() < start + duration.toMillis()){
             try {
                 var text1 = get(String.format("https://www.developermail.com/api/v1/mailbox/%s", user.name()), user.token());
-                //System.out.println("--------------");
-                //System.out.println(text1);
+                System.out.println("--------------");
+                System.out.println(text1);
                 GetIdsResponse response1 = new ObjectMapper().readValue(text1, GetIdsResponse.class);
                 if (!response1.success()) {
                     throw new RuntimeException(response1.errors().toString());

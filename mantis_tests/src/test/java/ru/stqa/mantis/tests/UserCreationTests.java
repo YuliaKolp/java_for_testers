@@ -13,52 +13,21 @@ import java.util.stream.Stream;
 import static ru.stqa.mantis.tests.TestBase.app;
 
 public class UserCreationTests extends TestBase {
-
     DeveloperMailUser user;
-    public static Stream<String> randomUser(){
-        return Stream.of(CommonFunctions.randomString(4));
-    }
-
-    @ParameterizedTest
-    @MethodSource("randomUser")
-    void CanCreateUserRest(String user) {
-        var password = "password";
-        var email = String.format("%s@localhost", user);
-        // create user (email) on mail server (JamesHelper)
-        app.jamesApi().addUser(email, password);
-
-        // open creation form and send (browser)
-        System.out.println(String.format("Email is '%s'. Password is '%s'", email, password));
-        app.http().signup(user, email);
-
-        // recieve (wait for) email (MailHelper)
-        var messages =  app.mail().receive(email, password, Duration.ofSeconds(90));
-
-        // retrieve link out of email
-        var text = messages.get(0).content();
-        var url = CommonFunctions.getUrl(text);
-
-        // go to browser , go by link and register user (browser)
-        app.http().registerUser(url, user, password);
-
-        // check that user can log in (HttpSessionHelper)
-        app.http().login(user, password);
-        Assertions.assertTrue(app.http().isLoggedIn());
-    }
 
     @Test
     void CanCreateUserDevMail() {
         var password = "password";
         // create user (email) on mail server (JamesHelper)
         user = app.developerMail().addUser();
-        var email = String.format("%s@developer.mail.com", user.name());
+        var email = String.format("%s@developermail.com", user.name());
 
         // open creation form and send (browser)
         System.out.println(String.format("Email is '%s'. Password is '%s'", email, password));
         app.http().signup(user.name(), email);
 
         // recieve (wait for) email (MailHelper)*/
-        var message =  app.developerMail().receive(user, Duration.ofSeconds(90));
+        var message =  app.developerMail().receive(user, Duration.ofSeconds(60));
 
         // retrieve link out of email
         var url = CommonFunctions.getUrl(message);
@@ -72,7 +41,7 @@ public class UserCreationTests extends TestBase {
         Assertions.assertTrue(app.http().isLoggedIn());
     }
 
-    @AfterEach
+   @AfterEach
     void deleteMailUser(){
         System.out.println("===============Delete");
         app.developerMail().deleteUser(user);
