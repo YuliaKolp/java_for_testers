@@ -1,5 +1,6 @@
 package ru.stqa.addressbook.manager;
 
+import io.qameta.allure.Step;
 import ru.stqa.addressbook.manager.hbm.GroupRecord;
 import ru.stqa.addressbook.model.ContactData;
 import ru.stqa.addressbook.manager.hbm.ContactRecord;
@@ -76,7 +77,7 @@ public class HibernateHelper extends HelperBase{
         return new ContactRecord(Integer.parseInt(id), data.name(), data.lastname(), data.address(), data.home(), data.mobile(), data.secondary(), data.email(), data.email2(), data.email3());
             }
 
-
+    @Step
     public List<GroupData> getGroupList(){
         return convertGroupList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord", GroupRecord.class).list();
